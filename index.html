@@ -17,8 +17,8 @@
         function RunCode(){
             Excel.run(async function (context) {
 
-                let my_worksheet = context.workbook.worksheets.getItem(this.format_worksheet);
-                let my_range = my_worksheet.getRange(this.format_range);
+                let my_worksheet = context.workbook.worksheets.getFirstItem();
+                let my_range = my_worksheet.getRange("A1");
                 let my_border = my_range.format.borders.getItem("EdgeBottom")
                 await context.sync();
                 document.getElementById("output").innerHTML="Hi"
@@ -30,7 +30,7 @@
     </script>
   </head>
   <body onload="startMeUp();">
-    <p>Put a bottom border on cell A1.  <br>This code will report it's style below</p>
+    <p>Put a bottom border on cell A1 of the first sheet in this workbook.  <br>This code will report it's style below</p>
     <button onclick="RunCode()">Report Style</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
