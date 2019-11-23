@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GetFileAsync Bug</title>
+    <title>Bug Demo</title>
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js" type="text/javascript"></script>
     <script>
         var the_counter=0;
@@ -20,8 +20,11 @@
                 let my_worksheet = context.workbook.worksheets.getActiveWorksheet();
                 let my_range = my_worksheet.getRange("A1");
                 let my_border = my_range.format.borders.getItem("EdgeBottom")
+                my_border.load("style,weight")
                 await context.sync();
-                document.getElementById("output").innerHTML="Hi"
+                let message = "Style: " + my_border.style
+                message += "<br>Weight: " + my_border.weight
+                document.getElementById("output").innerHTML=message
 
             }).catch(function(error){
                 console.log("Error: " + error);
