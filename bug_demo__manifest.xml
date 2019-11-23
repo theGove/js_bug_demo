@@ -16,8 +16,8 @@
   <ProviderName>theGove</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
-  <DisplayName DefaultValue="getFileAsync crash test" />
-  <Description DefaultValue="A demonstration of how getFileAsync will cause Excel to crash"/>
+  <DisplayName DefaultValue="Bug Demo" />
+  <Description DefaultValue="A project to demonstrate bugs in the Office JS Code"/>
 
   <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
   <IconUrl DefaultValue="https://thegove.github.io/js_bug_demo/bug.png" />
@@ -128,14 +128,14 @@
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Demonstrate Bug" />
-        <bt:String id="getFileAsync.Group1Label" DefaultValue="getFileAsync" />
-        <bt:String id="getFileAsync.bug.Title" DefaultValue="Watch a call to getFileAsync crash excel" />
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Bug" />
+        <bt:String id="getFileAsync.Group1Label" DefaultValue="Demonstrate" />
+        <bt:String id="getFileAsync.bug.Title" DefaultValue="See a bug in action" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Although the first call to getFileAsync behaves as expected, subsequent calls may cause Excel to crash." />
-        <bt:String id="GetStarted.Description" DefaultValue="Your getFileAsync add-in loaded succesfully. Go to the HOME tab and click the 'Demonstrate Bug' button to get started." />
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="This project is just to deminstrate bugs with the simplest code possible." />
+        <bt:String id="GetStarted.Description" DefaultValue="Your add-in loaded succesfully. Go to the HOME tab and click the 'Demonstrate Bug' button to get started." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
