@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GetFileAsync Bug</title>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js" type="text/javascript"></script>
+    <script>
+        var the_counter=0;
+        function startMeUp(){
+            Office.initialize = function () {
+            console.log('starting up');
+            document.getElementById("output").innerHTML = "Addin Initialized"
+            }
+        }
+
+        //The example comes from the MS Documentation on the getFileAsync() method at this URL:
+        //https://docs.microsoft.com/en-us/javascript/api/office/office.document.  It's a long
+        //page, just scroll to getFileAsync or search the page for "The following example gets
+        //the document in Office Open XML" 
+
+        //I have made 4 changes to the example because the example depended on a way of showing 
+        //feedback to the user that is not native
+
+
+        // The following example gets the document in Office Open XML ("compressed") format in 65536 bytes (64 KB) slices.
+        // Note: The implementation of app.showNotification in this example is from the Visual Studio template for Office Add-ins.
+        function getDocumentAsCompressed() {
+            Office.context.document.getFileAsync(Office.FileType.Compressed, { sliceSize: 65536 /*64 KB*/ }, 
+                function (result) {
+                    if (result.status == "succeeded") {
+                    // If the getFileAsync call succeeded, then
+                    // result.value will return a valid File Object.
+                    var myFile = result.value;
+                    var sliceCount = myFile.sliceCount;
+                    var slicesReceived = 0, gotAllSlices = true, docdataSlices = [];
+        //////// #1 change by Gove:  app.showNotification to write directly to a paragraph tag
+                    //app.showNotification("File size:" + myFile.size + " #Slices: " + sliceCount);//original code
+                    document.getElementById("output").innerHTML = "file size:" + myFile.size + " #Slices: " + sliceCount + "<hr>" + document.getElementById("output").innerHTML;// as modified by Gove
+
+                    // Get the file slices.
+                    getSliceAsync(myFile, 0, sliceCount, gotAllSlices, docdataSlices, slicesReceived);
+                    }
+                    else {
+        //////// #2 change by Gove:  app.showNotification changed to write directly to paragraph tag
+                    //app.showNotification("Error:", result.error.message);//original code
+                    document.getElementById("output").innerHTML = "Error: " + result.error.message  + "<hr>" + document.getElementById("output").innerHTML;// as modified by Gove
+                    }
+            });
+        }
+
+        function getSliceAsync(file, nextSlice, sliceCount, gotAllSlices, docdataSlices, slicesReceived) {
+            file.getSliceAsync(nextSlice, function (sliceResult) {
+                if (sliceResult.status == "succeeded") {
+                    if (!gotAllSlices) { // Failed to get all slices, no need to continue.
+                        return;
+                    }
+
+                    // Got one slice, store it in a temporary array.
+                    // (Or you can do something else, such as
+                    // send it to a third-party server.)
+                    docdataSlices[sliceResult.value.index] = sliceResult.value.data;
+                    if (++slicesReceived == sliceCount) {
+                    // All slices have been received.
+                    file.closeAsync();
+                    onGotAllSlices(docdataSlices);
+                    }
+                    else {
+                        getSliceAsync(file, ++nextSlice, sliceCount, gotAllSlices, docdataSlices, slicesReceived);
+                    }
+                }
+                    else {
+                        gotAllSlices = false;
+                        file.closeAsync();
+
+        //////// #3 change by Gove:  app.showNotification changed to write directly to paragraph tag
+                        //app.showNotification("getSliceAsync Error:", sliceResult.error.message);//original code
+                        document.getElementById("output").innerHTML ="getSliceAsync Error: " + sliceResult.error.message + "<hr>" + document.getElementById("output").innerHTML;//as modified by Gove
+                    }
+            });
+        }
+
+        function onGotAllSlices(docdataSlices) {
+            var docdata = [];
+            for (var i = 0; i < docdataSlices.length; i++) {
+                docdata = docdata.concat(docdataSlices[i]);
+            }
+
+            var fileContent = new String();
+            for (var j = 0; j < docdata.length; j++) {
+                fileContent += String.fromCharCode(docdata[j]);
+            }
+
+            // Now all the file content is stored in 'fileContent' variable,
+            // you can do something with it, such as print, fax...
+        //////// #4 change by Gove:  just doing something with the file content////////
+        document.getElementById("output").innerHTML = "fileContent.length: " + fileContent.length  + "<hr>" + document.getElementById("output").innerHTML;
+        }
+        function changeCell(){
+            Excel.run(function (context) {
+                var the_number= Math.ceil(Math.random() * (4999) + 1);
+                var the_row= Math.ceil(Math.random() * (49) + 1);
+                var the_col= String.fromCharCode(Math.random() * (25) + 65);
+                var the_address = the_col + the_row.toString() + ":" + the_col + (the_row+50).toString();
+                document.getElementById("output").innerHTML = ++the_counter + ". " + the_address + " = " + the_number  + "<hr>" + document.getElementById("output").innerHTML;        
+                var sheet = context.workbook.worksheets.getActiveWorksheet();
+                var range = sheet.getRange(the_address);
+                range.values=the_number++;
+                return context.sync();
+
+            }).catch(function(error){
+                console.log("Error: " + error);
+            });
+        }
+    </script>
+  </head>
+  <body onload="startMeUp();">
+    <p>Clicking either of these buttons multiple times will not cause Excel to crash. However, if you alternate clicking one then the other, usually in fewer than 100 cycles, Excel will crash hard.</p>
+    <button onclick="getDocumentAsCompressed()">File Bytes</button>
+    <button onclick="changeCell()">Change Cell</button>
+    <p id="output"></p>
+  </body>
+</html>
