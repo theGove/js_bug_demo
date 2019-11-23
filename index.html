@@ -14,7 +14,7 @@
             }
         }
         
-        function ReportStyle(){
+        function RunCode(){
             Excel.run(async function (context) {
 
                 let my_worksheet = context.workbook.worksheets.getItem(this.format_worksheet);
@@ -30,8 +30,8 @@
     </script>
   </head>
   <body onload="startMeUp();">
-    <p>Put a bottom border on cell A1.  This code will report it's style below</p>
-    <button onclick="getDocumentAsCompressed()">Report Style</button>
+    <p>Put a bottom border on cell A1.  <br>This code will report it's style below</p>
+    <button onclick="RunCode()">Report Style</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
   </body>
