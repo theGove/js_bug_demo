@@ -16,25 +16,29 @@
         
         function RunCode(){
             Excel.run(async function (context) {
-
-                let my_worksheet = context.workbook.worksheets.getActiveWorksheet();
-                let my_range = my_worksheet.getRange("A1");
-                let my_border = my_range.format.borders.getItem("EdgeBottom")
-                my_border.load("style,weight")
+                const pivotTable = context.workbook.worksheets.getItem("Pivot Table").pivotTables.pivotTables.getItem("Local");
+                const filters = pivotTable.filterHierarchies;
+                filter.load("items");
                 await context.sync();
-                let message = "Style: " + my_border.style
-                message += "<br>Weight: " + my_border.weight
-                document.getElementById("output").innerHTML=message
+                
+                for(let one_filter of filter.items){
+                    print(one_filter.name) 
+                }
+
+
 
             }).catch(function(error){
                 console.log("Error: " + error);
             });
         }
+        function print(data){
+            document.getElementById("output").innerHTML += "<br>" + data
+        }
     </script>
   </head>
   <body onload="startMeUp();">
-    <p>Put a bottom border on cell A1 of the active sheet.  <br><br>This code will report it's style below</p>
-    <button onclick="RunCode()">Report Style</button>
+    <p>This code will show the filters of the pivot table named "local" in a sheet named "local"</p>
+    <button onclick="RunCode()">Run</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
   </body>
