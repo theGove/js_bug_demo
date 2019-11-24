@@ -17,7 +17,7 @@
         function RunCode(){
             Excel.run(async function (context) {
 
-                let active_cell =context.workbook.getSelectedRange()[0][0]
+                let active_cell =context.workbook.getSelectedRange()
                 active_cell.load("style", "address")
                 await context.sync();
                 document.getElementById("output").innerHTML += "<br>" & active_cell.address & ": " & active_cell.style
