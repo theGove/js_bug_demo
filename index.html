@@ -17,19 +17,10 @@
         function RunCode(){
             Excel.run(async function (context) {
 
-                let borders=[]
-                for (let i=1;i<=13;i++){
-                    borders.push(context.workbook.worksheets.getActiveWorksheet().getRange("A"+i).format.borders.getItem("EdgeBottom"))
-                    borders[i-1].load("style")
-                }
+                let active_cell =context.workbook.getSelectedRange()[0][0]
+                active_cell.load("style", "address")
                 await context.sync();
-                let message=""
-                for (let i=0;i<=12;i++){
-                  message += "<br>Style A" + i + ": " + borders.style[i]
-                }  
-                
-                
-                document.getElementById("output").innerHTML=message
+                document.getElementById("output").innerHTML += "<br>" & active_cell.address & ": " & active_cell.style
 
             }).catch(function(error){
                 console.log("Error: " + error);
@@ -38,11 +29,9 @@
     </script>
   </head>
   <body onload="startMeUp();">
-    <div>
-    <p>Put a bottom border on any of cells A1:A12 of the active sheet.  <br><br>This code will report they style of the bottom border of each below</p>
+    <p>This code will report the style of the bottom border of the active cell.</p>
     <button onclick="RunCode()">Report Style</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
-    </div>
   </body>
 </html>
