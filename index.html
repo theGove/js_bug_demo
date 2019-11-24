@@ -14,19 +14,30 @@
             }
         }
         
+        function Clear(){
+            document.getElementById("output").innerHTML = ""
+        }
+        
         function RunCode(){
             Excel.run(async function (context) {
                 const range = context.workbook.worksheets.getItem("Pivot Table").getRange("C1")
                 const pivotTable = context.workbook.worksheets.getItem("Pivot Table").pivotTables.getItem("Local")
-                const my_items = pivotTable.filterHierarchies.getItem("Owner").fields.getItem("Owner").items
-                my_items.load("name,visible")
+                
+                
+                // I really don't understand the diffference between a pivot table's 'filterHierarchies'
+                // and its'hierarchies', but the code behaves the same whichever I use
+
+                //const field_items = pivotTable.filterHierarchies.getItem("Owner").fields.getItem("Owner").items
+                const field_items = pivotTable.hierarchies.getItem("Owner").fields.getItem("Owner").items
+
+                field_items.load("name,visible")
                 range.load("values")
                 await context.sync()
 
-                print("========================================") 
+                print("<hr>") 
                 print("C1: " + range.values[0][0])
 
-                for(let one of my_items.items){
+                for(let one of field_items.items){
                     print(one.name + ": " + one.visible) 
                 }
 
@@ -41,8 +52,9 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>23. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>24. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
     <button onclick="RunCode()">Run</button>
+    <button onclick="Clear()">Clear</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
     </div>
