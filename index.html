@@ -20,9 +20,8 @@
                 const my_items = pivotTable.hierarchies.getItem("Owner").fields.getItem("Owner").items
                 my_items.load("name,visible")
                 await context.sync()
-                console.log("my_items",my_items)
                 for(let one of my_items.items){
-                    print(one.name) 
+                    print(one.name + ": " + one.visible) 
                 }
 
             }).catch(function(error){
@@ -36,7 +35,7 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>17. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>18. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
     <button onclick="RunCode()">Run</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
