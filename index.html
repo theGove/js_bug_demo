@@ -17,7 +17,7 @@
         function RunCode(){
             Excel.run(async function (context) {
                 const pivotTable = context.workbook.worksheets.getItem("Pivot Table").pivotTables.getItem("Local");
-                const my_items = pivotTable.filterHierarchies.getItem("Owner").fields.getItem("Owner").Items
+                const my_items = pivotTable.hierarchies.getItem("Owner").fields.getItem("Owner").Items
                 my_items.load("name,visible")
                 await context.sync()
                 console.log("my_items",my_items)
@@ -36,7 +36,7 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>12. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>13. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
     <button onclick="RunCode()">Run</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
