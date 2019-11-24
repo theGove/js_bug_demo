@@ -28,14 +28,16 @@
                 const pivotField = fields.items[0]
                 pivotField.load("items")
                 await context.sync()
+                console.log("pivotField.id",pivotField.id)
                 console.log("pivotField",pivotField)
 
-                const pivotItemCollection = pivotField.items[0]
+                const pivotItem = pivotField.items[0]
+                pivotItem.load("items")
                 await context.sync()
-                console.log("pivotItemCollection",pivotItemCollection)
+                console.log("pivotItem",pivotItem)
 
-                for(let one_field of pivotField.items){
-                    print(one_field.name) 
+                for(let one of pivotItem.items){
+                    print(one.name) 
                 }
 
             }).catch(function(error){
@@ -49,7 +51,7 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>10. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>11. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
     <button onclick="RunCode()">Run</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
