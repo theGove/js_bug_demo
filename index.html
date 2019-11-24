@@ -16,10 +16,16 @@
         
         function RunCode(){
             Excel.run(async function (context) {
+                const c1 = context.workbook.worksheets.getItem("Pivot Table").getRange("c1")
                 const pivotTable = context.workbook.worksheets.getItem("Pivot Table").pivotTables.getItem("Local")
                 const my_items = pivotTable.hierarchies.getItem("Owner").fields.getItem("Owner").items
                 my_items.load("name,visible")
+                c1.load("values")
                 await context.sync()
+
+                print("========================================") 
+                print("C1: " + c1.value)
+
                 for(let one of my_items.items){
                     print(one.name + ": " + one.visible) 
                 }
@@ -35,7 +41,7 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>18. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>19. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
     <button onclick="RunCode()">Run</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
