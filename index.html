@@ -23,6 +23,7 @@
                 const fields = filters.items[0].fields;
                 fields.load("items");
                 await context.sync();
+                console.log("fields", fields)
                 const pivotField = fields.items[0]
                 pivotField.load("items")
                 await context.sync();
@@ -42,7 +43,7 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>6. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>7. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
     <button onclick="RunCode()">Run</button>
     <!--button onclick="changeCell()">Change Cell</button-->
     <p id="output"></p>
