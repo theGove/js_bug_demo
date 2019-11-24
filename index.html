@@ -18,10 +18,10 @@
             Excel.run(async function (context) {
                 const pivotTable = context.workbook.worksheets.getItem("Pivot Table").pivotTables.getItem("Local");
                 const filters = pivotTable.filterHierarchies;
-                filter.load("items");
+                filters.load("items");
                 await context.sync();
                 
-                for(let one_filter of filter.items){
+                for(let one_filter of filters.items){
                     print(one_filter.name) 
                 }
 
