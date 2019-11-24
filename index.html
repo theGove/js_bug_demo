@@ -23,7 +23,7 @@
                 const fields = filters.items[0].fields;
                 fields.load("items");
                 await context.sync();
-                const pivotField = fields[0]
+                const pivotField = fields.items[0]
                 pivotField.load("items")
                 await context.sync();
                 
