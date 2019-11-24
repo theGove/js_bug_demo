@@ -40,6 +40,7 @@
                 for(let one of field_items.items){
                     print(one.name + ": " + one.visible) 
                 }
+                print("<br>")
 
             }).catch(function(error){
                 console.log("Error: " + error);
@@ -52,7 +53,21 @@
   </head>
   <body onload="startMeUp();">
     <div>
-    <p>24. This code will show the filters of the pivot table named "local" in a sheet named "Pivot Table"</p>
+    <p>There seems to be a bug in the way the office JS reads the visible property of items in a filter of a pivot table.  This addin will show the error under the following conditions:</p>
+        <ul>
+        <li>There is a pivot table on a sheet named pivot table</li>
+        <li>The pivot table has a report filter in cell C3</li>
+        <li>There are at least three values to select in the report fitler</li>
+        </ul> 
+        Steps to see the error:
+        <ol>
+        <li>Configure the report filter to show all items without the "show multiple items" checkbox checked as seen in the following image<br><img src="images/all.png"></li>
+        <li>Click on the "Run" button.  This will show the "visible" property of each item in the filter.  This shows all to be visible as expected. <br><br></li>
+        <li>Now, select a single item to be used in the filter as shown here. <br><img src="images/local.png"></li>
+        <li>Click the "Run" button.  The visible property for each item in the filter will still be show "true" for each item even though only the selected items shoud be visible<br><br></li>
+        <li>Now, check the "Select Multiple Items" check box and select one or more items to be used in the filter as shown here. <br><img src="images/local2.png"></li>
+        <li>Click the "Run" button.  The visible property will be reported correctly for each item in the filter.<br><br></li>
+        </ol>
     <button onclick="RunCode()">Run</button>
     <button onclick="Clear()">Clear</button>
     <!--button onclick="changeCell()">Change Cell</button-->
